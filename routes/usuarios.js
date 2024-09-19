@@ -3,6 +3,7 @@ const { Usuarios } = require("../database/database");
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const axios = require("axios");
+const { Op } = require("sequelize");
 
 const router = express.Router();
 
@@ -44,10 +45,24 @@ router.post("/", async (req, res) => {
       });
       res.status(201).send(novoUsuario);
     })
-    .cacth((error) => {
+    .catch((error) => {
       console.log(error);
       res.status(500).send({ erro: "Erro ao criar usuário" });
     });
+});
+
+router.get("/", async (req, res) => {
+  const usuarios = await Usuarios.findAll({
+    where: req.query.search
+      ? {
+          [Op.or]: [
+            { nome: { [Op.like]: `%${req.query.search}%` } },
+            { nick: { [Op.like]: `%${req.query.search}%` } },
+          ],
+        }
+      : {},
+  });
+  res.status(200).send(usuarios);
 });
 
 module.exports = router;
