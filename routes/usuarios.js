@@ -7,6 +7,7 @@ const { Op } = require("sequelize");
 
 const router = express.Router();
 
+// Criação de um novo usuário
 router.post("/", async (req, res) => {
   const { nome, email, senha, nascimento, nick } = req.body;
 
@@ -51,6 +52,7 @@ router.post("/", async (req, res) => {
     });
 });
 
+// Listagem de usuários
 router.get("/", async (req, res) => {
   const usuarios = await Usuarios.findAll({
     where: req.query.search

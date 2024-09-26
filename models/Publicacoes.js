@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    mensagem: {
+    publicacao: {
       type: DataTypes.STRING,
       allowNull: false,
     },
