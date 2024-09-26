@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
     usuario_id,
   });
 
-  res.status(201).send({ mensagem_id: novaPublicacao.id });
+  res.status(201).send({ publicacao_id: novaPublicacao.id });
 });
 
 // Listagem de publicações
@@ -36,16 +36,18 @@ router.get("/", async (req, res) => {
     ],
   });
 
-  const publicacoesFormatadas = publicacoes.map((publicacao) => {
-    return {
-      mensagem_id: publicacao.id,
-      publicacao: publicacao.mensagem,
-      usuario_id: publicacao.Usuario.id,
-      nome: publicacao.Usuario.nome,
-      nick: publicacao.Usuario.nick,
-      imagem: publicacao.Usuario.imagem,
-    };
-  });
+  const publicacoesFormatadas = publicacoes
+    .map((publicacao) => {
+      return {
+        publicacao_id: publicacao.id,
+        publicacao: publicacao.publicacao,
+        usuario_id: publicacao.Usuario.id,
+        nick: publicacao.Usuario.nick,
+        imagem: publicacao.Usuario.imagem,
+        criado_em: publicacao.createdAt,
+      };
+    })
+    .sort((a, b) => a.criado_em - b.criado_em);
 
   res
     .status(200)
