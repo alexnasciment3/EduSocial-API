@@ -12,15 +12,14 @@ module.exports = (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    creado_em: {
-      type: DataTypes.DATE,
+    mensagem: {
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
     },
-    atualizado_em: {
-      type: DataTypes.DATE,
+    qtd_likes: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+      defaultValue: 0,
     },
   });
 };
