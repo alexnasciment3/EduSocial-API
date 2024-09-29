@@ -3,6 +3,7 @@ const { sequelize } = require("./database/database");
 const rotasUsuarios = require("./routes/usuarios");
 const rotasPublicacoes = require("./routes/publicacoes");
 const rotasComentarios = require("./routes/comentarios");
+const rotasCurtidas = require("./routes/curtidas");
 const app = express();
 
 app.use(express.json());
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use("/usuarios", rotasUsuarios);
 app.use("/publicacoes", rotasPublicacoes);
 app.use("/comentarios", rotasComentarios);
+app.use("/curtidas", rotasCurtidas);
 
 const PORT = process.env.PORT || 3000;
 
