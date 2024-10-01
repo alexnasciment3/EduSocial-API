@@ -64,4 +64,28 @@ router.get("/", async (req, res) => {
     .send({ data: comentariosFormatados, total: comentarios.length });
 });
 
+// Delete um comentário
+router.delete("/", async (req, res) => {
+  const { comentario_id, usuario_id } = req.body;
+
+  const usuarioExistente = await Usuarios.findByPk(usuario_id);
+  if (!usuarioExistente) {
+    return res.status(400).json({ erro: "Usuário não encontrado" });
+  }
+
+  const comentario = await Comentarios.findByPk(comentario_id);
+
+  if (!comentario) {
+    return res.status(400).json({ erro: "Comentário não encontrado" });
+  }
+
+  if (comentario.usuario_id !== usuario_id) {
+    return res.status(403).json({ erro: "Usuário não autorizado" });
+  }
+
+  await comentario.destroy();
+
+  res.status(204).send();
+});
+
 module.exports = router;

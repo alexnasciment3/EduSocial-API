@@ -1,5 +1,10 @@
 const express = require("express");
-const { Publicacoes, Usuarios } = require("../database/database");
+const {
+  Publicacoes,
+  Usuarios,
+  Comentarios,
+  sequelize,
+} = require("../database/database");
 
 const router = express.Router();
 
@@ -52,6 +57,31 @@ router.get("/", async (req, res) => {
   res
     .status(200)
     .send({ data: publicacoesFormatadas, total: publicacoes.length });
+});
+
+// Delete de uma publicação e todos os seus comentários
+router.delete("/", async (req, res) => {
+  const { publicacao_id, usuario_id } = req.body;
+
+  const publicacaoExistente = await Publicacoes.findByPk(publicacao_id);
+
+  if (!publicacaoExistente) {
+    return res.status(400).json({ erro: "Publicação não encontrada" });
+  }
+
+  if (!usuario_id) {
+    return res.status(400).json({ erro: "Usuário não informado" });
+  }
+
+  if (publicacaoExistente.usuario_id !== usuario_id) {
+    return res.status(403).json({ erro: "Usuário não autorizado" });
+  }
+
+  sequelize.transaction(async (t) => {
+    await Comentarios.destroy({ where: { publicacao_id } }, { transaction: t });
+    await publicacaoExistente.destroy({ transaction: t });
+    res.status(200).send({ mensagem: "Publicação deletada com sucesso" });
+  });
 });
 
 module.exports = router;
