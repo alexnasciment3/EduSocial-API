@@ -1,7 +1,11 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../database/database.js";
+import Usuarios from "./Usuarios.js";
 
-module.exports = (sequelize) => {
-  return sequelize.define("Publicacoes", {
+class Publicacoes extends Model {}
+
+Publicacoes.init(
+  {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -21,5 +25,13 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: 0,
     },
-  });
-};
+  },
+  {
+    sequelize,
+    modelName: "Publicacoes",
+  }
+);
+
+Publicacoes.belongsTo(Usuarios, { foreignKey: "usuario_id" });
+
+export default Publicacoes;

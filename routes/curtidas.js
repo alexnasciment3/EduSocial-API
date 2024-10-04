@@ -1,12 +1,10 @@
-const { Publicacoes } = require("../database/database");
-const { Sequelize } = require('sequelize');
-const express = require("express");
+import Publicacoes from "../models/Publicacoes.js";
+import express from "express";
 
 const router = express.Router();
 
 // Adiciona uma curtida em uma Publicação
 router.post("/", async (req, res) => {
-
   const { publicacao_id } = req.body;
   console.log(publicacao_id);
   if (!publicacao_id) {
@@ -19,10 +17,9 @@ router.post("/", async (req, res) => {
   }
 
   publicacaoExistente.qtd_likes++;
-
   await publicacaoExistente.save();
 
   res.status(200).send({ qtd_likes: publicacaoExistente.qtd_likes });
 });
 
-module.exports = router;
+export default router;

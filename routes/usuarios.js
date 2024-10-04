@@ -1,9 +1,9 @@
-const express = require("express");
-const { Usuarios } = require("../database/database");
-const bcrypt = require("bcryptjs");
-const moment = require("moment");
-const axios = require("axios");
-const { Op } = require("sequelize");
+import express from "express";
+import Usuario from "../models/Usuarios.js";
+import bcrypt from "bcryptjs";
+import moment from "moment";
+import axios from "axios";
+import { Op } from "sequelize";
 
 const router = express.Router();
 
@@ -22,11 +22,11 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ erro: "A idade deve ser maior que 16 anos" });
   }
 
-  const emailExistente = await Usuarios.findOne({ where: { email } });
+  const emailExistente = await Usuario.findOne({ where: { email } });
   if (emailExistente)
     return res.status(400).send({ erro: "Email já está em uso" });
 
-  const nickExistente = await Usuarios.findOne({ where: { nick } });
+  const nickExistente = await Usuario.findOne({ where: { nick } });
   if (nickExistente)
     return res.status(400).send({ erro: "Nick já está em uso" });
 
@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
       const imageURL = response.request.res.responseUrl;
       const senhaHashed = await bcrypt.hash(senha, 10);
 
-      const novoUsuario = await Usuarios.create({
+      const novoUsuario = await Usuario.create({
         nome,
         email,
         nick,
@@ -54,7 +54,7 @@ router.post("/", async (req, res) => {
 
 // Listagem de usuários
 router.get("/", async (req, res) => {
-  const usuarios = await Usuarios.findAll({
+  const usuarios = await Usuario.findAll({
     where: req.query.search
       ? {
           [Op.or]: [
@@ -67,4 +67,4 @@ router.get("/", async (req, res) => {
   res.status(200).send(usuarios);
 });
 
-module.exports = router;
+export default router;

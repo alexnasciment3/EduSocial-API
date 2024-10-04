@@ -1,5 +1,8 @@
-const { Publicacoes, Usuarios, Comentarios } = require("../database/database");
-const express = require("express");
+import Comentarios from "../models/Comentarios.js";
+import Publicacoes from "../models/Publicacoes.js";
+import Usuarios from "../models/Usuarios.js";
+
+import express from "express";
 
 const router = express.Router();
 
@@ -88,4 +91,4 @@ router.delete("/", async (req, res) => {
   res.status(204).send();
 });
 
-module.exports = router;
+export default router;

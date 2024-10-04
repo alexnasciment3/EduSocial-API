@@ -1,10 +1,7 @@
-const express = require("express");
-const {
-  Publicacoes,
-  Usuarios,
-  Comentarios,
-  sequelize,
-} = require("../database/database");
+import express from "express";
+import Publicacoes from "../models/Publicacoes.js";
+import Usuarios from "../models/Usuarios.js";
+import Comentarios from "../models/Comentarios.js";
 
 const router = express.Router();
 
@@ -49,6 +46,7 @@ router.get("/", async (req, res) => {
         usuario_id: publicacao.Usuario.id,
         nick: publicacao.Usuario.nick,
         imagem: publicacao.Usuario.imagem,
+        qtd_likes: publicacao.qtd_likes,
         criado_em: publicacao.createdAt,
       };
     })
@@ -84,4 +82,4 @@ router.delete("/", async (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

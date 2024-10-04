@@ -1,7 +1,10 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../database/database.js";
 
-module.exports = (sequelize) => {
-  return sequelize.define("Usuarios", {
+class Usuario extends Model {}
+
+Usuario.init(
+  {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -19,19 +22,24 @@ module.exports = (sequelize) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     senha: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     nascimento: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     imagem: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
-  });
-};
+  },
+  {
+    sequelize,
+    modelName: "Usuarios",
+  }
+);
+
+export default Usuario;
