@@ -57,6 +57,42 @@ router.get("/", async (req, res) => {
     .send({ data: publicacoesFormatadas, total: publicacoes.length });
 });
 
+// Lista de publicações de um usuário
+router.get("/:usuario_id", async (req, res) => {
+  const { usuario_id } = req.params;
+  const publicacoes = await Publicacoes.findAll({
+    where: { usuario_id },
+    include: [
+      {
+        model: Usuarios,
+        attributes: ["id", "nome", "nick", "imagem"],
+      },
+    ],
+  });
+
+  if (publicacoes.length === 0) {
+    return res.status(404).json({ erro: "Nenhuma publicação encontrada" });
+  }
+
+  const publicacoesFormatadas = publicacoes
+    .map((publicacao) => {
+      return {
+        publicacao_id: publicacao.id,
+        publicacao: publicacao.publicacao,
+        usuario_id: publicacao.Usuario.id,
+        nick: publicacao.Usuario.nick,
+        imagem: publicacao.Usuario.imagem,
+        qtd_likes: publicacao.qtd_likes,
+        criado_em: publicacao.createdAt,
+      };
+    })
+    .sort((a, b) => a.criado_em - b.criado_em);
+
+  res
+    .status(200)
+    .send({ data: publicacoesFormatadas, total: publicacoes.length });
+});
+
 // Delete de uma publicação e todos os seus comentários
 router.delete("/", async (req, res) => {
   const { publicacao_id, usuario_id } = req.body;
