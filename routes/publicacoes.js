@@ -57,9 +57,10 @@ router.get("/", async (req, res) => {
     .send({ data: publicacoesFormatadas, total: publicacoes.length });
 });
 
-// Lista de publicações de um usuário
-router.get("/:usuario_id", async (req, res) => {
+// Lista de publicações de um usuário e quantidades de comentarios e curtidas
+router.get("/de/:usuario_id", async (req, res) => {
   const { usuario_id } = req.params;
+
   const publicacoes = await Publicacoes.findAll({
     where: { usuario_id },
     include: [
@@ -69,13 +70,11 @@ router.get("/:usuario_id", async (req, res) => {
       },
     ],
   });
-
-  if (publicacoes.length === 0) {
-    return res.status(404).json({ erro: "Nenhuma publicação encontrada" });
-  }
-
-  const publicacoesFormatadas = publicacoes
-    .map((publicacao) => {
+  const publicacoesFormatadas = await Promise.all(
+    publicacoes.map(async (publicacao) => {
+      const qtd_comentarios = await Comentarios.findAndCountAll({
+        where: { publicacao_id: publicacao.id },
+      });
       return {
         publicacao_id: publicacao.id,
         publicacao: publicacao.publicacao,
@@ -83,14 +82,68 @@ router.get("/:usuario_id", async (req, res) => {
         nick: publicacao.Usuario.nick,
         imagem: publicacao.Usuario.imagem,
         qtd_likes: publicacao.qtd_likes,
+        qtd_comentarios: qtd_comentarios.count,
         criado_em: publicacao.createdAt,
       };
     })
-    .sort((a, b) => a.criado_em - b.criado_em);
+  );
 
   res
     .status(200)
     .send({ data: publicacoesFormatadas, total: publicacoes.length });
+});
+
+// Retorna uma publicação específica e seus comentários ordenados por data
+router.get("/:publicacao_id", async (req, res) => {
+  const { publicacao_id } = req.params;
+  const publicacao = await Publicacoes.findByPk(publicacao_id, {
+    include: [
+      {
+        model: Usuarios,
+        attributes: ["id", "nome", "nick", "imagem"],
+      },
+    ],
+  });
+
+  if (!publicacao) {
+    return res.status(404).json({ erro: "Publicação não encontrada" });
+  }
+
+  const comentarios = await Comentarios.findAll({
+    where: { publicacao_id },
+    include: [
+      {
+        model: Usuarios,
+        attributes: ["id", "nome", "nick", "imagem"],
+      },
+    ],
+    order: [["createdAt", "ASC"]],
+  });
+
+  const comentariosFormatados = comentarios.map((comentario) => {
+    return {
+      comentario_id: comentario.id,
+      comentario: comentario.comentario,
+      usuario_id: comentario.Usuario.id,
+      nick: comentario.Usuario.nick,
+      imagem: comentario.Usuario.imagem,
+      qtd_likes: comentario.qtd_likes,
+      criado_em: comentario.createdAt,
+    };
+  });
+
+  const publicacaoFormatada = {
+    publicacao_id: publicacao.id,
+    publicacao: publicacao.publicacao,
+    usuario_id: publicacao.Usuario.id,
+    nick: publicacao.Usuario.nick,
+    imagem: publicacao.Usuario.imagem,
+    qtd_likes: publicacao.qtd_likes,
+    criado_em: publicacao.createdAt,
+    comentarios: comentariosFormatados,
+  };
+
+  res.status(200).send(publicacaoFormatada);
 });
 
 // Delete de uma publicação e todos os seus comentários
