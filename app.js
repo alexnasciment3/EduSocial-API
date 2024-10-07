@@ -1,9 +1,9 @@
 import express from "express";
 import sequelize from "./database/database.js";
-import rotasUsuarios from "./routes/usuarios.js";
-import rotasPublicacoes from "./routes/publicacoes.js";
-import rotasComentarios from "./routes/comentarios.js";
-import rotasCurtidas from "./routes/curtidas.js";
+import rotasUsuarios from "./src/routes/usuarios.js";
+import rotasPublicacoes from "./src/routes/publicacoes.js";
+import rotasComentarios from "./src/routes/comentarios.js";
+import rotasCurtidas from "./src/routes/curtidas.js";
 
 const app = express();
 

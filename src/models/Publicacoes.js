@@ -1,11 +1,10 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../database/database.js";
+import sequelize from "../../database/database.js";
 import Usuarios from "./Usuarios.js";
-import Publicacoes from "./Publicacoes.js";
 
-class Comentarios extends Model {}
+class Publicacoes extends Model {}
 
-Comentarios.init(
+Publicacoes.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -17,11 +16,7 @@ Comentarios.init(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    publicacao_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    comentario: {
+    publicacao: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -33,11 +28,10 @@ Comentarios.init(
   },
   {
     sequelize,
-    modelName: "Comentarios",
+    modelName: "Publicacoes",
   }
 );
 
-Comentarios.belongsTo(Usuarios, { foreignKey: "usuario_id" });
-Comentarios.belongsTo(Publicacoes, { foreignKey: "publicacao_id" });
+Publicacoes.belongsTo(Usuarios, { foreignKey: "usuario_id" });
 
-export default Comentarios;
+export default Publicacoes;
