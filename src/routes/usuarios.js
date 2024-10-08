@@ -44,7 +44,14 @@ router.post("/", async (req, res) => {
         imagem: imageURL,
         nascimento: dataNascimento,
       });
-      res.status(201).send(novoUsuario);
+      res.status(201).send({
+        usuario_id: novoUsuario.id,
+        nome,
+        email,
+        nick,
+        imagem: imageURL,
+        nascimento: dataNascimento,
+      });
     })
     .catch((error) => {
       console.log(error);

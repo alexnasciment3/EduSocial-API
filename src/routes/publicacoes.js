@@ -36,21 +36,20 @@ router.get("/", async (req, res) => {
         attributes: ["id", "nome", "nick", "imagem"],
       },
     ],
+    order: [["createdAt", "DESC"]],
   });
 
-  const publicacoesFormatadas = publicacoes
-    .map((publicacao) => {
-      return {
-        publicacao_id: publicacao.id,
-        publicacao: publicacao.publicacao,
-        usuario_id: publicacao.Usuario.id,
-        nick: publicacao.Usuario.nick,
-        imagem: publicacao.Usuario.imagem,
-        qtd_likes: publicacao.qtd_likes,
-        criado_em: publicacao.createdAt,
-      };
-    })
-    .sort((a, b) => a.criado_em - b.criado_em);
+  const publicacoesFormatadas = publicacoes.map((publicacao) => {
+    return {
+      publicacao_id: publicacao.id,
+      publicacao: publicacao.publicacao,
+      usuario_id: publicacao.Usuario.id,
+      nick: publicacao.Usuario.nick,
+      imagem: publicacao.Usuario.imagem,
+      qtd_likes: publicacao.qtd_likes,
+      criado_em: publicacao.createdAt,
+    };
+  });
 
   res
     .status(200)
