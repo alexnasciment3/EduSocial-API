@@ -1,5 +1,3 @@
-Aqui está um exemplo de como o arquivo `README.md` pode ser estruturado para o projeto:
-
 ---
 
 # BentoTwitter - Simples API de Rede Social
