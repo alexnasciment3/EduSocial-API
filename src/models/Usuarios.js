@@ -35,10 +35,16 @@ Usuario.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // criado_em: {
+    //   type: DataTypes.DATE,
+    //   defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+    //   allowNull: false,
+    // },
   },
   {
     sequelize,
     modelName: "Usuarios",
+    timestamps: false,
   }
 );
 

@@ -15,7 +15,7 @@ app.use("/comentarios", rotasComentarios);
 app.use("/curtidas", rotasCurtidas);
 app.use("/seguidores", rotasSeguidores);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 app.listen(PORT, async () => {
   console.log(`Servidor rodando na porta:${PORT}`);

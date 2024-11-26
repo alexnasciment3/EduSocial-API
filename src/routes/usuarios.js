@@ -22,11 +22,17 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ erro: "A idade deve ser maior que 16 anos" });
   }
 
-  const emailExistente = await Usuario.findOne({ where: { email } });
+  const emailExistente = await Usuario.findOne({
+    where: { email },
+    attributes: ["email"],
+  });
   if (emailExistente)
     return res.status(400).send({ erro: "Email já está em uso" });
 
-  const nickExistente = await Usuario.findOne({ where: { nick } });
+  const nickExistente = await Usuario.findOne({
+    where: { nick },
+    attributes: ["nick"],
+  });
   if (nickExistente)
     return res.status(400).send({ erro: "Nick já está em uso" });
 

@@ -2,30 +2,22 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "./database/database.sqlite",
-});
-
-/* Se quiser conectar no Banco de Dados na Nuvem descomente o trecho abaixo e comente o acima*/
-
-// const sequelize = new Sequelize(
-//   process.env.DB_PROD_NAME,
-//   process.env.DB_PROD_USER,
-//   process.env.DB_PROD_PASSWORD,
-//   {
-//     host: process.env.DB_PROD_HOST,
-//     port: process.env.DB_PROD_PORT,
-//     dialect: process.env.DB_PROD_DIALECT,
-//     dialectOptions: {
-//       ssl: {
-//         require: true,
-//         rejectUnauthorized: false,
-//       },
-//     },
-//     logging: false,
-//   }
-// );
+const sequelize = new Sequelize(
+  process.env.DB_PROD_NAME,
+  process.env.DB_PROD_USER,
+  process.env.DB_PROD_PASSWORD,
+  {
+    host: process.env.DB_PROD_HOST,
+    port: process.env.DB_PROD_PORT,
+    dialect: process.env.DB_PROD_DIALECT,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+    logging: false,
+  }
+);
 
 export default sequelize;

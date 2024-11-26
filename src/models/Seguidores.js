@@ -20,10 +20,16 @@ Seguidores.init(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    // criado_em: {
+    //   type: DataTypes.DATE,
+    //   defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+    //   allowNull: false,
+    // },
   },
   {
     sequelize,
     modelName: "Seguidores",
+    timestamps: false,
   }
 );
 Seguidores.belongsTo(Usuarios, { foreignKey: "usuario_id" });

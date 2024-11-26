@@ -36,9 +36,10 @@ router.get("/", async (req, res) => {
         attributes: ["id", "nome", "nick", "imagem"],
       },
     ],
-    order: [["createdAt", "DESC"]],
+    order: [["criado_em", "DESC"]],
   });
 
+  console.log(publicacoes[0]);
   const publicacoesFormatadas = publicacoes.map((publicacao) => {
     return {
       publicacao_id: publicacao.id,
@@ -47,10 +48,9 @@ router.get("/", async (req, res) => {
       nick: publicacao.Usuario.nick,
       imagem: publicacao.Usuario.imagem,
       qtd_likes: publicacao.qtd_likes,
-      criado_em: publicacao.createdAt,
+      criado_em: publicacao.criado_em,
     };
   });
-
   res
     .status(200)
     .send({ data: publicacoesFormatadas, total: publicacoes.length });
@@ -82,7 +82,7 @@ router.get("/de/:usuario_id", async (req, res) => {
         imagem: publicacao.Usuario.imagem,
         qtd_likes: publicacao.qtd_likes,
         qtd_comentarios: qtd_comentarios.count,
-        criado_em: publicacao.createdAt,
+        criado_em: publicacao.criado_em,
       };
     })
   );
@@ -116,7 +116,7 @@ router.get("/:publicacao_id", async (req, res) => {
         attributes: ["id", "nome", "nick", "imagem"],
       },
     ],
-    order: [["createdAt", "ASC"]],
+    // order: [["criado_em", "ASC"]],
   });
 
   const comentariosFormatados = comentarios.map((comentario) => {
@@ -127,7 +127,7 @@ router.get("/:publicacao_id", async (req, res) => {
       nick: comentario.Usuario.nick,
       imagem: comentario.Usuario.imagem,
       qtd_likes: comentario.qtd_likes,
-      criado_em: comentario.createdAt,
+      // criado_em: comentario.criado_em,
     };
   });
 
@@ -138,7 +138,7 @@ router.get("/:publicacao_id", async (req, res) => {
     nick: publicacao.Usuario.nick,
     imagem: publicacao.Usuario.imagem,
     qtd_likes: publicacao.qtd_likes,
-    criado_em: publicacao.createdAt,
+    criado_em: publicacao.criado_em,
     comentarios: comentariosFormatados,
   };
 

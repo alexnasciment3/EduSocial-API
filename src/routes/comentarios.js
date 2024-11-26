@@ -49,18 +49,17 @@ router.get("/", async (req, res) => {
     ],
   });
 
-  const comentariosFormatados = comentarios
-    .map((comentario) => {
-      return {
-        comentario_id: comentario.id,
-        comentario: comentario.comentario,
-        usuario_id: comentario.Usuario.id,
-        nick: comentario.Usuario.nick,
-        imagem: comentario.Usuario.imagem,
-        criado_em: comentario.createdAt,
-      };
-    })
-    .sort((a, b) => a.criado_em - b.criado_em);
+  const comentariosFormatados = comentarios.map((comentario) => {
+    return {
+      comentario_id: comentario.id,
+      comentario: comentario.comentario,
+      usuario_id: comentario.Usuario.id,
+      nick: comentario.Usuario.nick,
+      imagem: comentario.Usuario.imagem,
+      // criado_em: comentario.criado_em,
+    };
+  });
+  // .sort((a, b) => a.criado_em - b.criado_em);
 
   res
     .status(200)

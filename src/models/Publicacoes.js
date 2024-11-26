@@ -25,10 +25,16 @@ Publicacoes.init(
       allowNull: false,
       defaultValue: 0,
     },
+    criado_em: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      allowNull: false,
+    },
   },
   {
     sequelize,
     modelName: "Publicacoes",
+    timestamps: false,
   }
 );
 
